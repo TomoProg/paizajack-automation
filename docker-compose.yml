@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  ruby:
+    build: ./
+    container_name: paiza
+    volumes:
+      - ./app/:/app
+      - ./script/:/script
+    command:
+      - /script/start_app.sh
+    environment:
+      LOGIN_E_MAIL: sample@gmail.com
+      LOGIN_PASSWORD: sample
+    tty: true
+  selenium:
+    image: selenium/standalone-chrome-debug:3.8.1
+    container_name: selenium_server
+    ports:
+      - "4444:4444"
+      - "5900:5900"
+
