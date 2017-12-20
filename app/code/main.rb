@@ -9,15 +9,17 @@ def dealer_no(dealer_name)
     when 'midorikawa' then 3            # 緑川 つばめ
     when 'rokumura' then 4              # 六村 リオ
     when 'kirishima_buuny' then 5       # 霧島 京子 バニー
+    when 'tsubame_bunny' then 6         # 緑川 つばめ バニー
+    when 'rokumura_bunny' then 7        # 六村 リオ バニー
     else 1                              # 猫先生
   end
 end
 
 # ジャックポットに使うコード
 def jackpot_code
-  <<~CODE
-    ここにコードを書く
-  CODE
+  <<'__CODE__'
+# ここにコードを書く
+__CODE__
 end
 
 # 起動パラメータ確認
@@ -29,8 +31,10 @@ driver = Selenium::WebDriver.for(:chrome, url: "http://selenium_server:4444/wd/h
 # 使用するコードをコピーする
 # TODO: paizaのコードエディタに直接入力したい
 #       直接入力したいが、オートコンプリートや自動インデントの影響で入力がうまくいかない
+driver.manage.timeouts.implicit_wait = 300  # send_key に時間がかかるためタイムアウトを長くしておく
 driver.navigate.to "http://onlinememo.net/users/login"
 driver.find_element(:id, 'content').send_key(jackpot_code)
+#driver.find_element(:id, 'content').set jackpot_code   # undefined method `set' で上手くいかない
 driver.find_element(:id, 'content').send_key([:control, 'a'], [:control, 'c'])
 
 # Paizaのジャックポットサイトへ移動
@@ -76,9 +80,14 @@ while true
     begin
       driver.find_element(:css, "#page_game_btn .page_game_retry_btn a").click
       break
+    rescue Net::ReadTimeout
+      if (Time.now - start_time) / 300 >= 1
+        raise "タイムアウトが解決されないよ・・・"
+      end
+      sleep(5)
     rescue Selenium::WebDriver::Error::NoSuchElementError
-      # １試合120秒もかからないと思っての120秒
-      if (Time.now - start_time) / 120 >= 1
+      # １試合300秒もかからないと思っての300秒
+      if (Time.now - start_time) / 300 >= 1
         raise "試合が終わらないよ・・・"
       end
       sleep(5)
