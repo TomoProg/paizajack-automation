@@ -16,15 +16,14 @@ def dealer_no(dealer_name)
 end
 
 # ジャックポットに使うコード
-def jackpot_code
-  <<'__CODE__'
-# ここにコードを書く
-__CODE__
+def jackpot_code(file_path, encoding: 'utf-8')
+  File.read(file_path, encoding: encoding)
 end
 
 # 起動パラメータ確認
-program_lang = ARGV[0]
-dealer_name = ARGV[1]
+code_file_path = ARGV[0]
+program_lang = ARGV[1]
+dealer_name = ARGV[2]
 
 driver = Selenium::WebDriver.for(:chrome, url: "http://selenium_server:4444/wd/hub")
 
@@ -33,7 +32,7 @@ driver = Selenium::WebDriver.for(:chrome, url: "http://selenium_server:4444/wd/h
 #       直接入力したいが、オートコンプリートや自動インデントの影響で入力がうまくいかない
 driver.manage.timeouts.implicit_wait = 300  # send_key に時間がかかるためタイムアウトを長くしておく
 driver.navigate.to "http://onlinememo.net/users/login"
-driver.find_element(:id, 'content').send_key(jackpot_code)
+driver.find_element(:id, 'content').send_key(jackpot_code(code_file_path))
 #driver.find_element(:id, 'content').set jackpot_code   # undefined method `set' で上手くいかない
 driver.find_element(:id, 'content').send_key([:control, 'a'], [:control, 'c'])
 
