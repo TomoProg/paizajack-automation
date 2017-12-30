@@ -15,6 +15,42 @@ def dealer_no(dealer_name)
   end
 end
 
+# 拡張子からプログラミング言語を選ぶセレクトボックスのテキストを取得する
+# filename: ファイル名
+def select_box_text(file_name)
+  case File.extname(file_name)
+    when '.java' then 'Java'
+    when '.php' then 'PHP'
+    when '.rb' then 'Ruby'
+    when '.py2' then 'Python2' # HACK: Python3とPython2の見分けがつかないため、Python2を使う場合はpy2という拡張子を使う
+    when '.py' then 'Python3'
+    when '.pl' then 'Perl'
+    when '.c' then 'C'
+    when '.cpp' then 'C++'
+    when '.cs' then 'C#' 
+    when '.js' then 'JavaScript' 
+    when '.m' then 'Objective-C' 
+    when '.scala' then 'Scala' 
+    when '.go' then 'Go' 
+    when '.swift' then 'Swift' 
+    when '.hs' then 'Haskell(Beta)' 
+    when '.coffee' then 'CoffeeScript(Beta)' 
+    when '.sh' then 'Bash(Beta)' 
+    when '.erl' then 'Erlang(Beta)' 
+    when '.r' then 'R(Beta)' 
+    when '.cobol' then 'COBOL(Beta)' 
+    when '.vb' then 'VB(Beta)' 
+    when '.fs' then 'F#(Beta)' 
+    when '.clj' then 'Clojure(Beta)' 
+    when '.d' then 'D(Beta)' 
+    when '.kt' then 'Kotlin(Beta)' 
+    when '.exs', 'ex' then 'Elixir(Beta)' 
+    when '.rs' then 'Rust(Beta)' 
+    when '.scm' then 'Scheme(Beta)' 
+    else raise ArgumentError "指定されたファイルから言語を推定できません。拡張子を確認してください。指定ファイル[#{file_name}]"
+  end
+end
+
 # ジャックポットに使うコード
 def jackpot_code(file_path, encoding: 'utf-8')
   File.read(file_path, encoding: encoding)
@@ -22,8 +58,10 @@ end
 
 # 起動パラメータ確認
 code_file_path = ARGV[0]
-program_lang = ARGV[1]
-dealer_name = ARGV[2]
+dealer_name = ARGV[1]
+
+# プログラミング言語確認
+program_lang = select_box_text(code_file_path)
 
 driver = Selenium::WebDriver.for(:chrome, url: "http://selenium_server:4444/wd/hub")
 
