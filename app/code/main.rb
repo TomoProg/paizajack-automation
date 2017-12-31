@@ -47,7 +47,7 @@ def select_box_text(file_name)
     when '.exs', 'ex' then 'Elixir(Beta)' 
     when '.rs' then 'Rust(Beta)' 
     when '.scm' then 'Scheme(Beta)' 
-    else raise ArgumentError "指定されたファイルから言語を推定できません。拡張子を確認してください。指定ファイル[#{file_name}]"
+    else raise ArgumentError, "指定されたファイルから言語を推定できません。拡張子を確認してください。指定ファイル[#{file_name}]"
   end
 end
 
