@@ -45,16 +45,12 @@ $ docker exec -it paiza /bin/bash
 
 ターミナルから直接起動したい場合は
 ```
-$ docker exec -it paiza ruby code/main.rb code_file program_lang dealer_name
+$ docker exec -it paiza ruby code/main.rb code_file dealer_name
 ```
 
 スクリプトの起動引数は以下の通りです。
 - code_file  
 提出するコードが書かれたファイルを指定します。
-
-- program_lang  
-使用するプログラミング言語を指定します。  
-プログラム記述画面のセレクトボックスの値です。  
 
 - dealer_name  
 対戦するディーラーの名前を指定します。  
@@ -64,7 +60,7 @@ $ docker exec -it paiza ruby code/main.rb code_file program_lang dealer_name
 ```
 # ruby code/main.rb Ruby kirishima
 or
-$ docker exec -it paiza ruby code/main.rb code/sample.rb Ruby kirishima
+$ docker exec -it paiza ruby code/main.rb code/sample.rb kirishima
 ```
 
 完成途中のため、この仕様は変更されることもあります。（笑）
